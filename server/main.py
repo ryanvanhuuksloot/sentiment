@@ -4,7 +4,7 @@ from classes.auth.yaml import Yaml
 
 if __name__ == "__main__":
     api_keys = Yaml().readYaml('keys.yaml')
-    companyNames = ['Walmart']
+    companyNames = ['Microsoft', 'Walmart']
     sources = ['abc-news', 'al-jazeera-english', 'cnbc', 'daily-mail', 'engadget', 'cnn', \
             'the-new-york-times', 'fox-news', 'bbc-news', 'the-verge']
     for name in companyNames:

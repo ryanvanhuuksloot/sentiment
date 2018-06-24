@@ -128,8 +128,7 @@ class sentimentClass:
 
         Returns
         -------
-        sentiment : dict
-            a dictionary of the sentiment from each article's text
+        None
         """
 
         if len(self.articles) == 0:
