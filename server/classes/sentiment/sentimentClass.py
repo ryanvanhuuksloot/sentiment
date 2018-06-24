@@ -30,6 +30,8 @@ class sentimentClass:
         self.from_param = from_param
         self.urls = []
         self.articles = []
+        self.sentimentScore = 0
+        self.articleCount = 0
 
         self.retrieveNews
         self.retrieveTextFromURL
@@ -63,12 +65,12 @@ class sentimentClass:
                                             page_size=100,
                                             page=pageNumber)
 
-
+            self.articleCount += all_articles['totalResults'] 
             for article in all_articles['articles']:
                 self.urls.append(article['url'])
 
             pageNumber += 1
-
+        
         return self.urls
 
     @retrieveNews.deleter
@@ -105,7 +107,7 @@ class sentimentClass:
             self.articles.append(extract['article'])
             count += 1
 
-            if count == 10:
+            if count == 5:
                 break
 
         return self.articles
@@ -116,7 +118,7 @@ class sentimentClass:
         self.articles = []
 
     @property
-    def retrieveSentiment(self) -> dict:
+    def retrieveSentiment(self) -> None:
         """
         Determine the sentiment for each block of text from each url from retrieveTextFromURL
 
@@ -147,8 +149,6 @@ class sentimentClass:
             sentimentRequest['documents'].append(document)
             id += 1
 
-
-
         header = {
             'Content-Type': 'application/json',
             'Ocp-Apim-Subscription-Key': self._api_keys['Ocp-Apim-Subscription-Key'],
@@ -156,5 +156,18 @@ class sentimentClass:
 
         microsoftUrl = "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment"
 
-        sentiment = requests.post(microsoftUrl, headers=header, json=sentimentRequest)
-        print(sentiment.json())
+        sentiments = requests.post(microsoftUrl, headers=header, json=sentimentRequest)
+        sentiments = sentiments.json()
+        sentimentCount = 0
+
+        for sentiment in sentiments['documents']:
+            if 'score' in sentiment:
+                self.sentimentScore += sentiment['score']
+                sentimentCount += 1
+
+        if sentimentCount:
+            self.sentimentScore = self.sentimentScore / sentimentCount
+        else:
+            self.sentimentScore = -1
+
+

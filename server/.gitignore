@@ -1,5 +1,6 @@
 # Folders
 venv/
+/env/
 logs/
 
 # File Extensions
