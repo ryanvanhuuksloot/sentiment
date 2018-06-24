@@ -7,4 +7,3 @@ logs/
 *.yaml
 
 # Files
-postgres_setup.txt
