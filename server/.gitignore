@@ -1,0 +1,9 @@
+# Folders
+venv/
+logs/
+
+# File Extensions
+*.yaml
+
+# Files
+postgres_setup.txt
