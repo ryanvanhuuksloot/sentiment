@@ -11,7 +11,7 @@ class sentimentClass:
     Responsible for all the methods for each company
     """
 
-    def __init__(self, companyName: str, api_keys: dict, sources: list, language: str = 'en', from_param: str = '2017-01-01', dateUntil: str = '2018-12-01'):
+    def __init__(self, companyName: str, api_keys: dict, sources: list, language: str = 'en', from_param: str = '2017-01-01', dateUntil: str = '2017-12-01'):
         """
         Initialize the object
 
@@ -55,22 +55,22 @@ class sentimentClass:
         pageNumber = 1
 
         LOGGER.info("Retrieving urls for " + self.companyName)
-        while (len(self.urls) < 100):
-            all_articles = newsapi.get_everything(q=self.companyName,
-                                            sources=self.sources,
-                                            from_param=self.from_param,
-                                            to=self.dateUntil,
-                                            language=self.language,
-                                            sort_by='relevancy',
-                                            page_size=100,
-                                            page=pageNumber)
+        # while (len(self.urls) < 100):
+        all_articles = newsapi.get_everything(q=self.companyName,
+                                        sources=self.sources,
+                                        from_param=self.from_param,
+                                        to=self.dateUntil,
+                                        language=self.language,
+                                        sort_by='relevancy',
+                                        page_size=100,
+                                        page=pageNumber)
 
-            self.articleCount += all_articles['totalResults'] 
-            for article in all_articles['articles']:
-                self.urls.append(article['url'])
+        self.articleCount += all_articles['totalResults']
+        for article in all_articles['articles']:
+            self.urls.append(article['url'])
 
-            pageNumber += 1
-        
+        pageNumber += 1
+
         return self.urls
 
     @retrieveNews.deleter
@@ -107,7 +107,7 @@ class sentimentClass:
             self.articles.append(extract['article'])
             count += 1
 
-            if count == 5:
+            if count == 50:
                 break
 
         return self.articles
@@ -168,5 +168,3 @@ class sentimentClass:
             self.sentimentScore = self.sentimentScore / sentimentCount
         else:
             self.sentimentScore = -1
-
-
